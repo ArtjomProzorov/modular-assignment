@@ -5,11 +5,13 @@ import {TabBar} from "./components/TabBar";
 import styled from 'styled-components';
 import Divider from "antd/es/divider";
 
-const HomePageTittle = styled.div`
-font-size: 2.5em;
-font-style: oblique;
-color: black;
-text-align: center;
+
+const Title = styled.div`
+  font-family:Georgia,serif;
+  font-size: 40px;
+  font-weight: bold;
+  text-transform:uppercase;
+  letter-spacing:2px; 
 `;
 
 function App() {
@@ -18,7 +20,7 @@ function App() {
         <div>
             <div style={{padding: 70}}>
                 <Divider orientation="left" plain>
-                    <HomePageTittle>Modular Bank Panel</HomePageTittle>
+                    <Title>Modular Bank Panel</Title>
                 </Divider>
                 <TabBar/>
             </div>
