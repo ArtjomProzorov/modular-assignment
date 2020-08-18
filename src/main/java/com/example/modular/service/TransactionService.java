@@ -48,19 +48,24 @@ public class TransactionService {
 
     private void createIncomingTransactionForTheRecipient(TransactionCreateRequest request, Transaction transaction) {
         if (OUT.name().equals(request.getDirection())) {
-            transactionMapper.saveTransaction(transaction.setDirection(IN.name())
-                    .setAccountId(request.getReceiverId()));
+            Optional<Account> receiver = accountMapper.findByAccountId(request.getReceiverId());
+            if (receiver.isPresent()) {
+                transactionMapper.saveTransaction(transaction.setDirection(IN.name())
+                        .setAccountId(request.getReceiverId()));
+            } else {
+                throw new AccountNotExistException(request.getReceiverId());
+            }
+
         }
     }
+
 
     private Balance addFunds(Account account, String currency, BigDecimal amount) {
         Balance foundBalance = balanceMapper.getBalance(account.getAccountId(), currency)
                 .orElseThrow(BalanceNotFoundException::new);
         BigDecimal fundsAfterAdding = foundBalance.getAmount().add(amount);
         balanceMapper.updateBalance(account.getAccountId(), currency, fundsAfterAdding);
-
         rabbitTemplateWrapper.addFundsRabbitMqInfo(amount, currency, account.getAccountId());
-
         return balanceMapper.getBalance(account.getAccountId(), currency)
                 .orElseThrow(BalanceNotFoundException::new);
     }
