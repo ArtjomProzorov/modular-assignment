@@ -61,7 +61,7 @@ public class AccountService {
         if (account.isPresent()) {
             return account.get();
         } else {
-            throw new AccountAlreadyExistsException();
+            throw new AccountNotExistException(id);
         }
     }
 

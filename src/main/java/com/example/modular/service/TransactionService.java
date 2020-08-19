@@ -50,8 +50,7 @@ public class TransactionService {
         if (OUT.name().equals(request.getDirection())) {
             Optional<Account> receiver = accountMapper.findByAccountId(request.getReceiverId());
             if (receiver.isPresent()) {
-                transactionMapper.saveTransaction(transaction.setDirection(IN.name())
-                        .setAccountId(request.getReceiverId()));
+                transactionMapper.saveTransaction(transaction.setDirection(IN.name()).setAccountId(request.getReceiverId()));
             } else {
                 throw new AccountNotExistException(request.getReceiverId());
             }
